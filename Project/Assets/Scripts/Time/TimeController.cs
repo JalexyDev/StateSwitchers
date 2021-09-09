@@ -1,5 +1,4 @@
-using System;
-using System.Collections;
+п»їusing System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,10 +8,10 @@ public class TimeController : MonoBehaviour
 
     public static TimeController Instance;
 
-    //можно запрашивать с сервера
+    //РјРѕР¶РЅРѕ Р·Р°РїСЂР°С€РёРІР°С‚СЊ СЃ СЃРµСЂРІРµСЂР°
     private DateTime lastCheckedTime;
 
-    // список подписчиков на время
+    // СЃРїРёСЃРѕРє РїРѕРґРїРёСЃС‡РёРєРѕРІ РЅР° РІСЂРµРјСЏ
     private List<ITimeReceiver> receivers;
 
     private void Awake()
@@ -49,8 +48,8 @@ public class TimeController : MonoBehaviour
 
             if (receivers != null && receivers.Count > 0)
             {
-                // в процессе игры в receivers могут добавляться элементы. Нельзя изменять список во время перебора
-                // так что этот список будет включаться в себя всех подписчиков на момент начала перебора
+                // РІ РїСЂРѕС†РµСЃСЃРµ РёРіСЂС‹ РІ receivers РјРѕРіСѓС‚ РґРѕР±Р°РІР»СЏС‚СЊСЃСЏ СЌР»РµРјРµРЅС‚С‹. РќРµР»СЊР·СЏ РёР·РјРµРЅСЏС‚СЊ СЃРїРёСЃРѕРє РІРѕ РІСЂРµРјСЏ РїРµСЂРµР±РѕСЂР°
+                // С‚Р°Рє С‡С‚Рѕ СЌС‚РѕС‚ СЃРїРёСЃРѕРє Р±СѓРґРµС‚ РІРєР»СЋС‡Р°С‚СЊСЃСЏ РІ СЃРµР±СЏ РІСЃРµС… РїРѕРґРїРёСЃС‡РёРєРѕРІ РЅР° РјРѕРјРµРЅС‚ РЅР°С‡Р°Р»Р° РїРµСЂРµР±РѕСЂР°
                 List<ITimeReceiver> enumeratableReceivers = new List<ITimeReceiver>(receivers);
 
                 foreach (ITimeReceiver receiver in enumeratableReceivers)
@@ -85,4 +84,3 @@ public class TimeController : MonoBehaviour
         return lastCheckedTime;
     }
 }
-

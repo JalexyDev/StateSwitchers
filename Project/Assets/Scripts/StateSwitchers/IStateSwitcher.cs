@@ -1,7 +1,7 @@
-
+﻿
 public interface IStateSwitcher
 {
-    public void StartSwitching(int fromIndex);
+    void StartSwitching(int fromIndex);
 
-    public void SelectState(int stateIndex);
+    void SelectState(int stateIndex);
 }

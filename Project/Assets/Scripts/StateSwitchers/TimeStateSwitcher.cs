@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,15 +6,15 @@ public class TimeStateSwitcher : MonoBehaviour, IStateSwitcher, ITimeReceiver
 {
     public List<TimeImageState> States;
 
-    private TimeController timeController;
     private TimeImageState currentState;
+    private TimeController timeController;
     private DateTime nextStateDate;
 
-    // экшн выполняемый при переходе с одной стадии на другую (например смена спрайта, замена награды в этой стадии и т.п.)
+    // СЌРєС€РЅ РІС‹РїРѕР»РЅСЏРµРјС‹Р№ РїСЂРё РїРµСЂРµС…РѕРґРµ СЃ РѕРґРЅРѕР№ СЃС‚Р°РґРёРё РЅР° РґСЂСѓРіСѓСЋ (РЅР°РїСЂРёРјРµСЂ СЃРјРµРЅР° СЃРїСЂР°Р№С‚Р°, Р·Р°РјРµРЅР° РЅР°РіСЂР°РґС‹ РІ СЌС‚РѕР№ СЃС‚Р°РґРёРё Рё С‚.Рї.)
     private Action<TimeImageState> betweenStatesAction;
-    // экшн на последней стадии. Тут можно переопределить награду, или удалить этот компонент (например у здания после постройки)
+    // СЌРєС€РЅ РЅР° РїРѕСЃР»РµРґРЅРµР№ СЃС‚Р°РґРёРё. РўСѓС‚ РјРѕР¶РЅРѕ РїРµСЂРµРѕРїСЂРµРґРµР»РёС‚СЊ РЅР°РіСЂР°РґСѓ, РёР»Рё СѓРґР°Р»РёС‚СЊ СЌС‚РѕС‚ РєРѕРјРїРѕРЅРµРЅС‚ (РЅР°РїСЂРёРјРµСЂ Сѓ Р·РґР°РЅРёСЏ РїРѕСЃР»Рµ РїРѕСЃС‚СЂРѕР№РєРё)
     private Action<TimeImageState> lastStateAction;
-    // экшн для растений который выполнится когда завершится последняя стадия (например удалится с грядки или вернется к состоянию без плодов)
+    // СЌРєС€РЅ РґР»СЏ СЂР°СЃС‚РµРЅРёР№ РєРѕС‚РѕСЂС‹Р№ РІС‹РїРѕР»РЅРёС‚СЃСЏ РєРѕРіРґР° Р·Р°РІРµСЂС€РёС‚СЃСЏ РїРѕСЃР»РµРґРЅСЏСЏ СЃС‚Р°РґРёСЏ (РЅР°РїСЂРёРјРµСЂ СѓРґР°Р»РёС‚СЃСЏ СЃ РіСЂСЏРґРєРё РёР»Рё РІРµСЂРЅРµС‚СЃСЏ Рє СЃРѕСЃС‚РѕСЏРЅРёСЋ Р±РµР· РїР»РѕРґРѕРІ)
     private Action<TimeImageState> finishAction;
 
     private bool hasNext;
@@ -52,14 +52,6 @@ public class TimeStateSwitcher : MonoBehaviour, IStateSwitcher, ITimeReceiver
         return timeController;
     }
 
-    public void SelectState(int stateIndex)
-    {
-        hasNext = true;
-        var state = States[stateIndex];
-        SetCurrent(state);
-        betweenStatesAction(state);
-    }
-
     private void SetCurrent(IState state)
     {
         currentState = state as TimeImageState;
@@ -78,6 +70,17 @@ public class TimeStateSwitcher : MonoBehaviour, IStateSwitcher, ITimeReceiver
         }
     }
 
+    public void SelectState(int stateIndex)
+    {
+        if (States.Count > stateIndex)
+        {
+            hasNext = true;
+            var state = States[stateIndex];
+            SetCurrent(state);
+            betweenStatesAction(state);
+        }
+    }
+
     public void ReceiveTime(DateTime currentTime)
     {
         if (hasNext)
@@ -89,7 +92,7 @@ public class TimeStateSwitcher : MonoBehaviour, IStateSwitcher, ITimeReceiver
                 if (index >= States.Count && finishAction != null)
                 {
                     hasNext = false;
-                    // выполняем действия, которые нужно выполнить после последней стадии (например удалить этот компонент)
+                    // РІС‹РїРѕР»РЅСЏРµРј РґРµР№СЃС‚РІРёСЏ, РєРѕС‚РѕСЂС‹Рµ РЅСѓР¶РЅРѕ РІС‹РїРѕР»РЅРёС‚СЊ РїРѕСЃР»Рµ РїРѕСЃР»РµРґРЅРµР№ СЃС‚Р°РґРёРё (РЅР°РїСЂРёРјРµСЂ СѓРґР°Р»РёС‚СЊ СЌС‚РѕС‚ РєРѕРјРїРѕРЅРµРЅС‚)
                     finishAction(currentState);
 
                     return;
@@ -99,16 +102,16 @@ public class TimeStateSwitcher : MonoBehaviour, IStateSwitcher, ITimeReceiver
 
                 if (index < States.Count - 1 && betweenStatesAction != null)
                 {
-                    // выполняем действия, которые нужно выполнить при переходе с одной стадии на другую
+                    // РІС‹РїРѕР»РЅСЏРµРј РґРµР№СЃС‚РІРёСЏ, РєРѕС‚РѕСЂС‹Рµ РЅСѓР¶РЅРѕ РІС‹РїРѕР»РЅРёС‚СЊ РїСЂРё РїРµСЂРµС…РѕРґРµ СЃ РѕРґРЅРѕР№ СЃС‚Р°РґРёРё РЅР° РґСЂСѓРіСѓСЋ
                     betweenStatesAction(currentState);
                 }
                 else if (index == States.Count - 1 && lastStateAction != null)
                 {
-                    // выполняем действие, которое выполняется на последней стадии (переопределить награду у растений, например)
+                    // РІС‹РїРѕР»РЅСЏРµРј РґРµР№СЃС‚РІРёРµ, РєРѕС‚РѕСЂРѕРµ РІС‹РїРѕР»РЅСЏРµС‚СЃСЏ РЅР° РїРѕСЃР»РµРґРЅРµР№ СЃС‚Р°РґРёРё (РїРµСЂРµРѕРїСЂРµРґРµР»РёС‚СЊ РЅР°РіСЂР°РґСѓ Сѓ СЂР°СЃС‚РµРЅРёР№, РЅР°РїСЂРёРјРµСЂ)
                     lastStateAction(currentState);
                 }
 
-                // если игрок выходил и пропустил несколько стадий, то с помощью рекурсии пробегаемся по всем пройденным стадиям.
+                // РµСЃР»Рё РёРіСЂРѕРє РІС‹С…РѕРґРёР» Рё РїСЂРѕРїСѓСЃС‚РёР» РЅРµСЃРєРѕР»СЊРєРѕ СЃС‚Р°РґРёР№, С‚Рѕ СЃ РїРѕРјРѕС‰СЊСЋ СЂРµРєСѓСЂСЃРёРё РїСЂРѕР±РµРіР°РµРјСЃСЏ РїРѕ РІСЃРµРј РїСЂРѕР№РґРµРЅРЅС‹Рј СЃС‚Р°РґРёСЏРј.
                 ReceiveTime(currentTime);
             }
         }
