@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Preview : MonoBehaviour
+public class Preview : MonoBehaviour, IDragable
 {
     [SerializeField] private Placable Placable;
 
@@ -25,14 +25,12 @@ public class Preview : MonoBehaviour
         red = new Color(1, .2f, .2f, .8f);
     }
 
-    private void OnMouseDrag()
+    public void OnDrag()
     {
-        if (EventSystem.current.IsPointerOverGameObject()) { return; }
-
         isMoving = true;
     }
 
-    private void OnMouseUp()
+    public void StopDrag()
     {
         isMoving = false;
     }
@@ -99,5 +97,4 @@ public class Preview : MonoBehaviour
     {
         return Size;
     }
-
 }
